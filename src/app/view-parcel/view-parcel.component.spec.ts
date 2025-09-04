@@ -8,9 +8,8 @@ describe('ViewParcelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewParcelComponent]
-    })
-    .compileComponents();
+      imports: [ViewParcelComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ViewParcelComponent);
     component = fixture.componentInstance;

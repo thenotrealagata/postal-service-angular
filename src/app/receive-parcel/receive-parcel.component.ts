@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-receive-parcel',
   imports: [],
   templateUrl: './receive-parcel.component.html',
-  styleUrl: './receive-parcel.component.less'
+  styleUrl: './receive-parcel.component.less',
 })
-export class ReceiveParcelComponent {
-
-}
+export class ReceiveParcelComponent {}

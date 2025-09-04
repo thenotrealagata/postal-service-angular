@@ -1,1 +1,37 @@
-<p>create-parcel works!</p>
+<h2>Create parcel</h2>
+<form nz-form [formGroup]="parcelForm" nzLabelAlign="right">
+  <nz-form-item>
+    <nz-form-label nzRequired>Parcel size</nz-form-label>
+    <nz-form-control>
+      <nz-select formControlName="size">
+        <nz-option [nzValue]="ParcelSize.XS" nzLabel="XS"></nz-option>
+        <nz-option [nzValue]="ParcelSize.S" nzLabel="S"></nz-option>
+        <nz-option [nzValue]="ParcelSize.M" nzLabel="M"></nz-option>
+        <nz-option [nzValue]="ParcelSize.L" nzLabel="L"></nz-option>
+        <nz-option [nzValue]="ParcelSize.XL" nzLabel="XL"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  @if (parcelForm.controls.senderEmail) {
+    <nz-form-item>
+      <nz-form-label>E-mail</nz-form-label>
+      <nz-form-control>
+        <input
+          nz-input
+          placeholder="user@example.com"
+          formControlName="senderEmail"
+          type="number"
+        />
+      </nz-form-control>
+    </nz-form-item>
+  }
+  <nz-form-item>
+    <nz-form-label>Recipient e-mail</nz-form-label>
+    <nz-form-control></nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>Pick-up point</nz-form-label>
+    <nz-form-control></nz-form-control>
+  </nz-form-item>
+  <button nz-button (click)="createParcel()">Create parcel</button>
+</form>

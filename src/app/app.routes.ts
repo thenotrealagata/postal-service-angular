@@ -6,10 +6,10 @@ import { ViewParcelComponent } from './view-parcel/view-parcel.component';
 import { ReceiveParcelComponent } from './receive-parcel/receive-parcel.component';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent, },
-    { path: 'register', component: LoginComponent, },
-    { path: 'parcels/create', component: CreateParcelComponent },
-    { path: 'parcels/details', component: ViewParcelComponent },
-    { path: 'parcels/receive', component: ReceiveParcelComponent },
-    { path: 'parcels', component: ParcelListingComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: LoginComponent },
+  { path: 'parcels/create', component: CreateParcelComponent },
+  { path: 'parcels/details', component: ViewParcelComponent },
+  { path: 'parcels/receive', component: ReceiveParcelComponent },
+  { path: 'parcels', component: ParcelListingComponent },
 ];
