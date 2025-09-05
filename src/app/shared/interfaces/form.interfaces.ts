@@ -1,16 +1,9 @@
 import { FormControl } from '@angular/forms';
+import { ParcelSize } from './http-protocol';
 
 export interface AuthenticationForm {
   username: FormControl<string>;
   password: FormControl<string>;
-}
-
-export enum ParcelSize {
-  XS,
-  S,
-  M,
-  L,
-  XL,
 }
 
 export interface CreateParcelForm {

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationRequest } from '../interfaces/http-protocol';
+import {
+  AuthenticationRequest,
+  LocationResponse,
+  LocationType,
+} from '../interfaces/http-protocol';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,21 +11,22 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class HttpClientService {
-  baseUrl = 'https://localhost:7244';
-
   constructor(private http: HttpClient) {}
 
   login(request: AuthenticationRequest): Observable<{ authToken: string }> {
-    return this.http.post<{ authToken: string }>(
-      `${this.baseUrl}/login`,
-      request,
-    );
+    return this.http.post<{ authToken: string }>(`/api/login`, request);
   }
 
   register(request: AuthenticationRequest): Observable<{ authToken: string }> {
-    return this.http.post<{ authToken: string }>(
-      `${this.baseUrl}/register`,
-      request,
-    );
+    return this.http.post<{ authToken: string }>(`/api/register`, request);
+  }
+
+  getLocations(locationType?: LocationType): Observable<LocationResponse[]> {
+    let queryString = '?';
+    if (locationType !== undefined) {
+      queryString += `locationType=${locationType}`;
+    }
+    console.log('query string', queryString);
+    return this.http.get<LocationResponse[]>(`/api/locations${queryString}`);
   }
 }

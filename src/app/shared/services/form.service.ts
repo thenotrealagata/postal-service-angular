@@ -8,8 +8,8 @@ import {
 import {
   AuthenticationForm,
   CreateParcelForm,
-  ParcelSize,
 } from '../interfaces/form.interfaces';
+import { ParcelSize } from '../interfaces/http-protocol';
 import { AuthService } from './auth.service';
 
 @Injectable({
