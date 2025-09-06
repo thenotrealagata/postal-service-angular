@@ -16,28 +16,71 @@
     @if (parcelForm.controls.senderEmail) {
       <nz-form-item>
         <nz-form-label nzRequired>E-mail</nz-form-label>
-        <nz-form-control>
+        <nz-form-control nzHasFeedback [nzErrorTip]="emailError">
           <input
             nz-input
             placeholder="user@example.com"
             formControlName="senderEmail"
           />
+          <ng-template #emailError>
+            @if (parcelForm.controls.senderEmail.errors?.['email']) {
+              Please input a valid e-mail!
+            }
+            @if (parcelForm.controls.senderEmail.errors?.['required']) {
+              Please input your e-mail!
+            }
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     }
     <nz-form-item>
       <nz-form-label nzRequired>Recipient e-mail</nz-form-label>
-      <nz-form-control>
+      <nz-form-control nzHasFeedback [nzErrorTip]="emailError">
         <input
           nz-input
           placeholder="user@example.com"
           formControlName="receiverEmail"
         />
+        <ng-template #emailError>
+            @if (parcelForm.controls.receiverEmail.errors?.['email']) {
+              Please input a valid e-mail!
+            }
+            @if (parcelForm.controls.receiverEmail.errors?.['required']) {
+              Please input the recipient's e-mail!
+            }
+          </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzRequired>Dispatch point</nz-form-label>
+      <nz-form-control nzHasFeedback nzErrorTip="Please choose a dispatch point!">
+        <nz-select formControlName="startLocationId">
+          @for (location of locations; track location.id) {
+            <nz-option
+              nzCustomContent
+              [nzValue]="location.id"
+              [nzLabel]="location.address"
+              [nzDisabled]="location.capacity == 0"
+            >
+              <span
+                nz-tooltip
+                [nzTooltipTitle]="
+                  location.capacity == 0
+                    ? 'This location currently cannot accept any more parcels.'
+                    : undefined
+                "
+                nzTooltipPlacement="right"
+              >
+                {{ location.address }}
+              </span>
+            </nz-option>
+          }
+        </nz-select>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzRequired>Pick-up point</nz-form-label>
-      <nz-form-control>
+      <nz-form-control nzHasFeedback nzErrorTip="Please choose a pick-up point!">
         <nz-select formControlName="endLocationId">
           @for (location of locations; track location.id) {
             <nz-option

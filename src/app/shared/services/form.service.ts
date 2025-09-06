@@ -18,17 +18,15 @@ import { AuthService } from './auth.service';
 export class FormService {
   constructor(private authService: AuthService) {}
 
-  authenticationForm(
-    validators?: ValidatorFn[],
-  ): FormGroup<AuthenticationForm> {
-    const formValidators = [Validators.required, ...(validators ?? [])];
+  authenticationForm(): FormGroup<AuthenticationForm> {
     return new FormGroup({
-      username: new FormControl<string>('', {
-        validators: formValidators,
+      email: new FormControl<string>('', {
+        validators: [Validators.required, Validators.email],
         nonNullable: true,
       }),
       password: new FormControl<string>('', {
-        validators: formValidators,
+        // TODO add validation rules: 1 lowercase, 1 uppercase, 1 digit, 1 non-alphanumeric
+        validators: [Validators.required, Validators.minLength(6)],
         nonNullable: true,
       }),
     });
@@ -41,6 +39,10 @@ export class FormService {
         nonNullable: true,
       }),
       receiverEmail: new FormControl<string>('', {
+        validators: [Validators.required, Validators.email],
+        nonNullable: true,
+      }),
+      startLocationId: new FormControl<number | undefined>(undefined, {
         validators: [Validators.required],
         nonNullable: true,
       }),
@@ -54,7 +56,7 @@ export class FormService {
       form.addControl(
         'senderEmail',
         new FormControl('', {
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.email],
           nonNullable: true,
         }),
       );

@@ -1,24 +1,28 @@
 import { Injectable } from '@angular/core';
+import { AuthenticationResponse } from '../interfaces/http-protocol';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  userEmail?: string;
-  authToken?: string;
-  refreshToken?: string;
+  private currentAuth?: AuthenticationResponse;
+
+  private loggedInSource = new BehaviorSubject(false);
+  currentlyLoggedIn = this.loggedInSource.asObservable();
 
   constructor() {}
 
-  isLoggedIn(): boolean {
-    return !!this.userEmail;
+  isLoggedIn() {
+    return this.currentlyLoggedIn;
   }
 
-  setUser(email: string) {
-    this.userEmail = email;
+  setAuth(authResponse: AuthenticationResponse) {
+    this.currentAuth = authResponse;
+    this.loggedInSource.next(true);
   }
 
-  getEmail(): string | undefined {
-    return this.userEmail;
+  getAuthToken() {
+    return this.currentAuth?.authToken;
   }
 }

@@ -9,6 +9,7 @@ import { AuthenticationRequest } from '../shared/interfaces/http-protocol';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,14 +31,12 @@ export class LoginComponent {
     private formService: FormService,
     private httpClient: HttpClientService,
     private nzMessageService: NzMessageService,
-    //private sessionService: UserService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService
   ) {
     this.login = activatedRoute.snapshot.routeConfig?.path === 'login';
-    this.authForm = formService.authenticationForm(
-      this.login ? [] : [Validators.minLength(5)],
-    );
+    this.authForm = formService.authenticationForm();
   }
 
   authenticate() {
@@ -56,11 +55,10 @@ export class LoginComponent {
     if (this.login) {
       // Send authentication request
       this.httpClient.login(request as AuthenticationRequest).subscribe({
-        next: (authToken) => {
-          //this.sessionService.setUsername(request.username);
-          //this.sessionService.createSession(authToken.message);
+        next: (authResponse) => {
+          this.authService.setAuth(authResponse);
           this.nzMessageService.success('Successful login');
-          this.router.navigate(['/']);
+          this.router.navigate(['/parcels']);
         },
         error: (err) => {
           this.nzMessageService.error('Login unsuccessful.');
@@ -77,13 +75,7 @@ export class LoginComponent {
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          if (err.status === 409) {
-            this.nzMessageService.error(
-              'The given username exists, please choose another one.',
-            );
-          } else {
-            this.nzMessageService.error('Unsuccessful registration.');
-          }
+          this.nzMessageService.error('Unsuccessful registration.');
         },
       });
     }

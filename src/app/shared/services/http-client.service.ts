@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
   AuthenticationRequest,
+  AuthenticationResponse,
   LocationResponse,
   LocationType,
+  ParcelRequest,
+  ParcelResponse,
 } from '../interfaces/http-protocol';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -13,20 +16,30 @@ import { HttpClient } from '@angular/common/http';
 export class HttpClientService {
   constructor(private http: HttpClient) {}
 
-  login(request: AuthenticationRequest): Observable<{ authToken: string }> {
-    return this.http.post<{ authToken: string }>(`/api/login`, request);
+  // Authentication and authorization
+  register(request: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`/api/register`, request);
   }
 
-  register(request: AuthenticationRequest): Observable<{ authToken: string }> {
-    return this.http.post<{ authToken: string }>(`/api/register`, request);
+  login(request: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`/api/login`, request);
   }
 
+  refresh(refreshToken: string): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>('/api/refresh', refreshToken);
+  }
+
+  // Locations
   getLocations(locationType?: LocationType): Observable<LocationResponse[]> {
     let queryString = '?';
     if (locationType !== undefined) {
       queryString += `locationType=${locationType}`;
     }
-    console.log('query string', queryString);
     return this.http.get<LocationResponse[]>(`/api/locations${queryString}`);
+  }
+
+  // Parcels
+  createParcel(parcel: ParcelRequest): Observable<ParcelResponse> {
+    return this.http.post<ParcelResponse>(`/api/parcels`, parcel);
   }
 }

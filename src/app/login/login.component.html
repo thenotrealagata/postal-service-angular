@@ -8,25 +8,25 @@
   </h2>
   <form nz-form [formGroup]="authForm" nzLabelAlign="right">
     <nz-form-item>
-      <nz-form-label nzRequired>Username</nz-form-label>
+      <nz-form-label nzRequired>E-mail</nz-form-label>
       <nz-form-control>
         <nz-form-control
           [nzValidateStatus]="
             !login &&
-            authForm.controls.username.dirty &&
-            authForm.controls.username.invalid
+            authForm.controls.email.dirty &&
+            authForm.controls.email.invalid
               ? 'error'
               : 'success'
           "
-          nzErrorTip="Username must be at least 5 characters long."
+          nzErrorTip="Please provide your e-mail."
           [nzSm]="24"
           [nzXs]="24"
         >
           <input
             nz-input
-            formControlName="username"
-            placeholder="Username"
-            type="text"
+            formControlName="email"
+            placeholder="user@example.com"
+            type="email"
           />
         </nz-form-control>
       </nz-form-control>
@@ -42,7 +42,7 @@
               ? 'error'
               : 'success'
           "
-          nzErrorTip="Password must be at least 5 characters long."
+          nzErrorTip="Password must be at least 6 characters long and must include an uppercase character, a lowercase character, a digit and a non-alphanumeric character."
           [nzSm]="24"
           [nzXs]="24"
         >
@@ -55,7 +55,8 @@
         </nz-form-control>
       </nz-form-control>
     </nz-form-item>
-    @if (login) {
+  </form>
+  @if (login) {
       <button nz-button (click)="authenticate()">Log in</button>
       <p>
         Don't have an account yet? <a routerLink="/register">Register here.</a>
@@ -64,5 +65,4 @@
       <button nz-button (click)="authenticate()">Register</button>
       <p>Already registered? <a routerLink="/login">Log in here.</a></p>
     }
-  </form>
 </div>

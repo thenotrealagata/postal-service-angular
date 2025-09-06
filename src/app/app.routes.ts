@@ -9,7 +9,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LoginComponent },
   { path: 'parcels/create', component: CreateParcelComponent },
-  { path: 'parcels/details', component: ViewParcelComponent },
   { path: 'parcels/receive', component: ReceiveParcelComponent },
+  { path: 'parcels/:id', component: ViewParcelComponent },
   { path: 'parcels', component: ParcelListingComponent },
 ];

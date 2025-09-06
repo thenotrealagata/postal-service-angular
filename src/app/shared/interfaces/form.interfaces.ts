@@ -2,7 +2,7 @@ import { FormControl } from '@angular/forms';
 import { ParcelSize } from './http-protocol';
 
 export interface AuthenticationForm {
-  username: FormControl<string>;
+  email: FormControl<string>;
   password: FormControl<string>;
 }
 
@@ -10,5 +10,6 @@ export interface CreateParcelForm {
   size: FormControl<ParcelSize>;
   senderEmail?: FormControl<string>;
   receiverEmail: FormControl<string>;
+  startLocationId: FormControl<number | undefined>;
   endLocationId: FormControl<number | undefined>;
 }
