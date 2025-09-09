@@ -23,10 +23,10 @@
             formControlName="senderEmail"
           />
           <ng-template #emailError>
-            @if (parcelForm.controls.senderEmail.errors?.['email']) {
+            @if (parcelForm.controls.senderEmail.errors?.["email"]) {
               Please input a valid e-mail!
             }
-            @if (parcelForm.controls.senderEmail.errors?.['required']) {
+            @if (parcelForm.controls.senderEmail.errors?.["required"]) {
               Please input your e-mail!
             }
           </ng-template>
@@ -42,18 +42,21 @@
           formControlName="receiverEmail"
         />
         <ng-template #emailError>
-            @if (parcelForm.controls.receiverEmail.errors?.['email']) {
-              Please input a valid e-mail!
-            }
-            @if (parcelForm.controls.receiverEmail.errors?.['required']) {
-              Please input the recipient's e-mail!
-            }
-          </ng-template>
+          @if (parcelForm.controls.receiverEmail.errors?.["email"]) {
+            Please input a valid e-mail!
+          }
+          @if (parcelForm.controls.receiverEmail.errors?.["required"]) {
+            Please input the recipient's e-mail!
+          }
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzRequired>Dispatch point</nz-form-label>
-      <nz-form-control nzHasFeedback nzErrorTip="Please choose a dispatch point!">
+      <nz-form-control
+        nzHasFeedback
+        nzErrorTip="Please choose a dispatch point!"
+      >
         <nz-select formControlName="startLocationId">
           @for (location of locations; track location.id) {
             <nz-option
@@ -80,7 +83,10 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzRequired>Pick-up point</nz-form-label>
-      <nz-form-control nzHasFeedback nzErrorTip="Please choose a pick-up point!">
+      <nz-form-control
+        nzHasFeedback
+        nzErrorTip="Please choose a pick-up point!"
+      >
         <nz-select formControlName="endLocationId">
           @for (location of locations; track location.id) {
             <nz-option

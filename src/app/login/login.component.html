@@ -57,12 +57,12 @@
     </nz-form-item>
   </form>
   @if (login) {
-      <button nz-button (click)="authenticate()">Log in</button>
-      <p>
-        Don't have an account yet? <a routerLink="/register">Register here.</a>
-      </p>
-    } @else {
-      <button nz-button (click)="authenticate()">Register</button>
-      <p>Already registered? <a routerLink="/login">Log in here.</a></p>
-    }
+    <button nz-button (click)="authenticate()">Log in</button>
+    <p>
+      Don't have an account yet? <a routerLink="/register">Register here.</a>
+    </p>
+  } @else {
+    <button nz-button (click)="authenticate()">Register</button>
+    <p>Already registered? <a routerLink="/login">Log in here.</a></p>
+  }
 </div>

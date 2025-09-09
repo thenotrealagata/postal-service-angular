@@ -13,7 +13,9 @@ export class AppComponent {
 
   isLoggedIn = false;
 
-  constructor(private authService: AuthService) { 
-    this.authService.currentlyLoggedIn.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+  constructor(private authService: AuthService) {
+    this.authService.currentlyLoggedIn.subscribe(
+      (isLoggedIn) => (this.isLoggedIn = isLoggedIn),
+    );
   }
 }

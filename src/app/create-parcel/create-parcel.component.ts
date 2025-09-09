@@ -42,7 +42,7 @@ export class CreateParcelComponent {
     private formService: FormService,
     private httpClientService: HttpClientService,
     private nzMessageService: NzMessageService,
-    private router: Router
+    private router: Router,
   ) {
     this.parcelForm = formService.createParcelForm();
 
@@ -56,24 +56,26 @@ export class CreateParcelComponent {
 
   createParcel() {
     // Validate form
-    Object.values(this.parcelForm.controls).forEach(control => {
+    Object.values(this.parcelForm.controls).forEach((control) => {
       control.markAsDirty();
       control.updateValueAndValidity({ onlySelf: true });
     });
 
     // If there are no errors, create parcel
     if (this.parcelForm.valid) {
-      this.httpClientService.createParcel(this.parcelForm.value as ParcelRequest).subscribe(
-        {
+      this.httpClientService
+        .createParcel(this.parcelForm.value as ParcelRequest)
+        .subscribe({
           next: (parcelResponse) => {
             this.nzMessageService.success('Parcel created successfully.');
             this.router.navigate([`/parcels/${parcelResponse.id}`]);
           },
           error: (error) => {
-            this.nzMessageService.error("Parcel couldn't be created. Please try again.");
-          }
-        }
-      );
+            this.nzMessageService.error(
+              "Parcel couldn't be created. Please try again.",
+            );
+          },
+        });
     }
   }
 }

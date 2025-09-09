@@ -33,7 +33,7 @@ export class LoginComponent {
     private nzMessageService: NzMessageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.login = activatedRoute.snapshot.routeConfig?.path === 'login';
     this.authForm = formService.authenticationForm();

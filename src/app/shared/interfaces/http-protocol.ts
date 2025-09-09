@@ -6,13 +6,13 @@ export type AuthenticationRequest = {
 export type CreateUserResponse = {
   id: string;
   email: string;
-}
+};
 
 export type AuthenticationResponse = {
   userId: string;
   authToken: string;
   refreshToken: string;
-}
+};
 
 export enum LocationType {
   AUTOMATE = 0,
@@ -35,23 +35,23 @@ export enum ParcelSize {
 }
 
 export type ParcelRequest = {
-  parcelSize: ParcelSize,
-  senderEmail?: string,
-  receiverEmail: string,
-  startLocationId: number,
-  endLocationId: number
-}
+  parcelSize: ParcelSize;
+  senderEmail?: string;
+  receiverEmail: string;
+  startLocationId: number;
+  endLocationId: number;
+};
 
 export type ParcelResponse = {
   id: number;
-  createdAt: Object;
-  placedAt?: Object;
-  arrivedAt?: Object;
+  createdAt: Date;
+  placedAt?: Date;
+  arrivedAt?: Date;
   isFulfilled: boolean;
-  parcelSize: ParcelSize;
+  size: ParcelSize;
   senderEmail: string;
   receiverEmail: string;
   startLocation: LocationResponse;
   endLocation: LocationResponse;
   currentLocation?: LocationResponse;
-}
+};

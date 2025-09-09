@@ -9,7 +9,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let subscription;
   if (token) {
-    const authenticatedRequest = req.clone({ headers: req.headers.set('authorization', `Bearer ${token}`) });
+    const authenticatedRequest = req.clone({
+      headers: req.headers.set('authorization', `Bearer ${token}`),
+    });
     subscription = next(authenticatedRequest);
   }
 
@@ -21,9 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         // TODO
         if (status == 401) {
         }
-      }
-    }
-    )
+      },
+    }),
   );
-
 };

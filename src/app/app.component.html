@@ -1,7 +1,12 @@
 <main class="main">
   <div class="content">
     <h1>postal service</h1>
-    <p>Post or receive parcels. @if (!isLoggedIn) { To access all features, create an account. }</p>
+    <p>
+      Post or receive parcels.
+      @if (!isLoggedIn) {
+        To access all features, create an account.
+      }
+    </p>
     <div class="pill-group">
       @if (!isLoggedIn) {
         <a class="pill" routerLink="/login"> Login </a>
