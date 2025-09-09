@@ -1,1 +1,63 @@
-<p>view-parcel works!</p>
+<div class="content">
+  <h2>View parcel</h2>
+  @if (parcel) {
+    <table style="width: 100%; margin-bottom: 2rem">
+      <tr>
+        <td class="font-weight-500">Sender</td>
+        <td>{{ parcel.senderEmail }}</td>
+      </tr>
+      <tr>
+        <td class="font-weight-500">Size</td>
+        <td>
+          {{ ParcelSize[parcel.size] }}
+        </td>
+      </tr>
+      <tr>
+        <td class="font-weight-500">Pick-up point</td>
+        <td>
+          {{ parcel.endLocation.address }}
+        </td>
+      </tr>
+      <tr>
+        <td class="font-weight-500">Status</td>
+        <td>
+          <ng-container
+            *ngTemplateOutlet="parcelStatus; context: { parcel: parcel }"
+          ></ng-container>
+        </td>
+      </tr>
+    </table>
+    <nz-steps [nzCurrent]="getParcelState | curry : parcel" nzSize="small">
+      <nz-step
+        nzTitle="Created"
+        [nzDescription]="(parcel.createdAt | date) ?? ''"
+      ></nz-step>
+      <nz-step
+        nzTitle="Placed"
+        [nzDescription]="(parcel.placedAt | date) ?? ''"
+      ></nz-step>
+      <nz-step
+        nzTitle="Arrived"
+        [nzDescription]="(parcel.arrivedAt | date) ?? ''"
+      ></nz-step>
+    </nz-steps>
+  } @else {
+    <nz-icon nzType="loading" nzTheme="outline" /> Loading
+  }
+</div>
+
+<ng-template #parcelStatus let-parcel="parcel">
+  @if (parcel.isFulfilled) {
+    <nz-icon nzType="checkCircle" nzTheme="outline" />
+    Fulfilled
+  } @else if (parcel.arrivedAt) {
+    <nz-icon nzType="environment" nzTheme="outline" />
+    Arrived
+  } @else if (parcel.placedAt) {
+    <nz-icon nzType="truck" nzTheme="outline" />
+    On the way
+  } @else {
+    <nz-icon nzType="inbox" nzTheme="outline" />
+    Not placed yet
+  }
+</ng-template>

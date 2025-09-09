@@ -39,7 +39,19 @@ export class HttpClientService {
   }
 
   // Parcels
+  getParcel(id: number): Observable<ParcelResponse> {
+    return this.http.get<ParcelResponse>(`/api/parcels/${id}`);
+  }
+
   createParcel(parcel: ParcelRequest): Observable<ParcelResponse> {
     return this.http.post<ParcelResponse>(`/api/parcels`, parcel);
+  }
+
+  getCreatedParcels(): Observable<ParcelResponse[]> {
+    return this.http.get<ParcelResponse[]>('/api/parcels/created');
+  }
+
+  getReceivedParcels(): Observable<ParcelResponse[]> {
+    return this.http.get<ParcelResponse[]>('/api/parcels/received');
   }
 }

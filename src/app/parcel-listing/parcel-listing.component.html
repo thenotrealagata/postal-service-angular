@@ -1,1 +1,76 @@
-<p>parcel-listing works!</p>
+<h2>Created parcels</h2>
+@if (createdParcels.length == 0) {
+  <p>You haven't created any parcels yet.</p>
+} @else {
+  @for (parcel of createdParcels; track parcel.id) {
+    <nz-card
+      style="width: 100%"
+      nzTitle="To: {{ parcel.endLocation.address }}"
+      [nzExtra]="viewTemplate"
+    >
+      <table style="width: 100%">
+        <tr>
+          <td class="font-weight-500">Receiver</td>
+          <td>{{ parcel.receiverEmail }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-500">Status</td>
+          <td>
+            <ng-container
+              *ngTemplateOutlet="parcelStatus; context: { parcel: parcel }"
+            ></ng-container>
+          </td>
+        </tr>
+      </table>
+    </nz-card>
+    <ng-template #viewTemplate>
+      <a routerLink="/parcels/{{ parcel.id }}">View</a>
+    </ng-template>
+  }
+}
+<h2>Received parcels</h2>
+@if (receivedParcels.length == 0) {
+  <p>No parcel has been created in our system for your address.</p>
+} @else {
+  @for (parcel of receivedParcels; track parcel.id) {
+    <nz-card
+      style="width: 100%"
+      nzTitle="To: {{ parcel.endLocation.address }}"
+      [nzExtra]="viewTemplate"
+    >
+      <table style="width: 100%">
+        <tr>
+          <td class="font-weight-500">Sender</td>
+          <td>{{ parcel.senderEmail }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-500">Status</td>
+          <td>
+            <ng-container
+              *ngTemplateOutlet="parcelStatus; context: { parcel: parcel }"
+            ></ng-container>
+          </td>
+        </tr>
+      </table>
+    </nz-card>
+    <ng-template #viewTemplate>
+      <a routerLink="/parcels/{{ parcel.id }}">View</a>
+    </ng-template>
+  }
+}
+
+<ng-template #parcelStatus let-parcel="parcel">
+  @if (parcel.isFulfilled) {
+    <nz-icon nzType="checkCircle" nzTheme="outline" />
+    Fulfilled
+  } @else if (parcel.arrivedAt) {
+    <nz-icon nzType="environment" nzTheme="outline" />
+    Arrived
+  } @else if (parcel.placedAt) {
+    <nz-icon nzType="truck" nzTheme="outline" />
+    On the way
+  } @else {
+    <nz-icon nzType="inbox" nzTheme="outline" />
+    Not placed yet
+  }
+</ng-template>
