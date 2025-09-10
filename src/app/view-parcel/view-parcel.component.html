@@ -7,6 +7,10 @@
         <td>{{ parcel.senderEmail }}</td>
       </tr>
       <tr>
+        <td class="font-weight-500">Receiver</td>
+        <td>{{ parcel.receiverEmail }}</td>
+      </tr>
+      <tr>
         <td class="font-weight-500">Size</td>
         <td>
           {{ ParcelSize[parcel.size] }}
@@ -27,7 +31,11 @@
         </td>
       </tr>
     </table>
-    <nz-steps [nzCurrent]="getParcelState | curry : parcel" nzSize="small">
+    <nz-steps
+      [nzCurrent]="getParcelState | curry: parcel"
+      nzSize="small"
+      style="margin-bottom: 1.5rem"
+    >
       <nz-step
         nzTitle="Created"
         [nzDescription]="(parcel.createdAt | date) ?? ''"
@@ -43,6 +51,17 @@
     </nz-steps>
   } @else {
     <nz-icon nzType="loading" nzTheme="outline" /> Loading
+  }
+
+  @if (
+    userEmail == parcel?.receiverEmail &&
+    !parcel?.isFulfilled &&
+    parcel?.arrivedAt
+  ) {
+    <button nz-button (click)="receive()">Receive parcel</button>
+  }
+  @if (userEmail == parcel?.senderEmail && !parcel?.placedAt) {
+    <button nz-button (click)="post()">Post parcel</button>
   }
 </div>
 
@@ -61,3 +80,43 @@
     Not placed yet
   }
 </ng-template>
+
+<nz-modal
+  [(nzVisible)]="isAccessCodeModalVisible"
+  nzTitle="Input access code"
+  (nzOnCancel)="closeAccessCodeModal()"
+  (nzOnOk)="submitAccessCode()"
+  [nzOkLoading]="getByAccessCodeLoading"
+>
+  <ng-container *nzModalContent>
+    <p>
+      To view a parcel that has been created by you or sent to you, input the
+      access code you received in the confirmation e-mail and your e-mail
+      address.
+    </p>
+    @if (accessCodeForm) {
+      <form nz-form [formGroup]="accessCodeForm" nzLabelAlign="right">
+        <nz-form-item>
+          <nz-form-label nzRequired>E-mail</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              placeholder="user@example.com"
+              formControlName="email"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzRequired>Access code</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              placeholder="Access code"
+              formControlName="accessCode"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    }
+  </ng-container>
+</nz-modal>

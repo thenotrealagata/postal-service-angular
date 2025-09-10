@@ -18,11 +18,11 @@ export class HttpClientService {
 
   // Authentication and authorization
   register(request: AuthenticationRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`/api/register`, request);
+    return this.http.post<AuthenticationResponse>('/api/register', request);
   }
 
   login(request: AuthenticationRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`/api/login`, request);
+    return this.http.post<AuthenticationResponse>('/api/login', request);
   }
 
   refresh(refreshToken: string): Observable<AuthenticationResponse> {
@@ -43,6 +43,15 @@ export class HttpClientService {
     return this.http.get<ParcelResponse>(`/api/parcels/${id}`);
   }
 
+  getParcelWithAccessCode(
+    email: string,
+    accessCode: string,
+  ): Observable<ParcelResponse> {
+    return this.http.get<ParcelResponse>(
+      `/api/parcels?email=${email}&accessCode=${accessCode}`,
+    );
+  }
+
   createParcel(parcel: ParcelRequest): Observable<ParcelResponse> {
     return this.http.post<ParcelResponse>(`/api/parcels`, parcel);
   }
@@ -53,5 +62,13 @@ export class HttpClientService {
 
   getReceivedParcels(): Observable<ParcelResponse[]> {
     return this.http.get<ParcelResponse[]>('/api/parcels/received');
+  }
+
+  postParcel(id: number): Observable<ParcelResponse> {
+    return this.http.patch<ParcelResponse>(`/api/parcels/${id}/post`, null);
+  }
+
+  receiveParcel(id: number): Observable<ParcelResponse> {
+    return this.http.patch<ParcelResponse>(`/api/parcels/${id}/receive`, null);
   }
 }

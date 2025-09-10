@@ -18,4 +18,8 @@ export class AppComponent {
       (isLoggedIn) => (this.isLoggedIn = isLoggedIn),
     );
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }

@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  AccessCodeForm,
   AuthenticationForm,
   CreateParcelForm,
 } from '../interfaces/form.interfaces';
@@ -63,5 +64,18 @@ export class FormService {
     }
 
     return form;
+  }
+
+  accessCodeForm(): FormGroup<AccessCodeForm> {
+    return new FormGroup({
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+        nonNullable: true,
+      }),
+      accessCode: new FormControl('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+    });
   }
 }

@@ -56,7 +56,7 @@ export class LoginComponent {
       // Send authentication request
       this.httpClient.login(request as AuthenticationRequest).subscribe({
         next: (authResponse) => {
-          this.authService.setAuth(authResponse);
+          this.authService.setAuth(authResponse, request.email!);
           this.nzMessageService.success('Successful login');
           this.router.navigate(['/parcels']);
         },

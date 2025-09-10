@@ -10,11 +10,13 @@
     <div class="pill-group">
       @if (!isLoggedIn) {
         <a class="pill" routerLink="/login"> Login </a>
+        <a class="pill" routerLink="/parcels/create"> Create parcel </a>
+        <a class="pill" routerLink="/parcels/view"> View parcel </a>
       } @else {
         <a class="pill" routerLink="/parcels"> List parcels </a>
+        <a class="pill" routerLink="/parcels/create"> Create parcel </a>
+        <a class="pill" (click)="logout()"> Log out </a>
       }
-      <a class="pill" routerLink="/parcels/create"> Create parcel </a>
-      <a class="pill" routerLink="/parcels/receive"> Receive parcel </a>
     </div>
     <div class="router-outlet">
       <router-outlet />

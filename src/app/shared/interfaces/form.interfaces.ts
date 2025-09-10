@@ -13,3 +13,8 @@ export interface CreateParcelForm {
   startLocationId: FormControl<number | undefined>;
   endLocationId: FormControl<number | undefined>;
 }
+
+export interface AccessCodeForm {
+  email: FormControl<string>;
+  accessCode: FormControl<string>;
+}
