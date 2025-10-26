@@ -8,7 +8,7 @@ import {
   ParcelResponse,
 } from '../interfaces/http-protocol';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,9 @@ export class HttpClientService {
   }
 
   refresh(refreshToken: string): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>('/api/refresh', refreshToken);
+    return this.http.post<AuthenticationResponse>('/api/refresh', refreshToken, {
+      headers: new HttpHeaders({'Content-Type':'application/json'})
+    });
   }
 
   // Locations

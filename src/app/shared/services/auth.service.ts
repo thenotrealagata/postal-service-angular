@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthenticationResponse } from '../interfaces/http-protocol';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClientService } from './http-client.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,16 +16,19 @@ export class AuthService {
   private loggedInSource = new BehaviorSubject(false);
   currentlyLoggedIn = this.loggedInSource.asObservable();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private httpClientService: HttpClientService) {}
 
   isLoggedIn() {
     return this.currentlyLoggedIn;
   }
 
-  setAuth(authResponse: AuthenticationResponse, email: string) {
+  setAuth(authResponse: AuthenticationResponse, email?: string) {
     this.currentAuth = authResponse;
-    this.userEmailSource?.next(email);
     this.loggedInSource.next(true);
+
+    if (email) {
+      this.userEmailSource?.next(email);
+    }
   }
 
   getAuthToken() {
@@ -37,5 +41,21 @@ export class AuthService {
     this.userEmailSource?.next('');
 
     this.router.navigate(['/login']);
+  }
+
+  async redeemRefreshToken(): Promise<void> {
+    if (!this.currentAuth) {
+      return Promise.reject();
+    }
+
+    this.httpClientService.refresh(JSON.stringify(this.currentAuth?.refreshToken)).subscribe({
+      next: (authResponse) => {
+        this.setAuth(authResponse);
+        return Promise.resolve();
+      },
+      error: (error) => {
+        return Promise.reject();
+      }
+    });
   }
 }

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
+import { refreshJwtInterceptor } from './shared/interceptors/refresh-jwt.interceptor';
 
 registerLocaleData(en);
 
@@ -23,6 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(en_GB),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, refreshJwtInterceptor])),
   ],
 };
