@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationResponse } from '../interfaces/http-protocol';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClientService } from './http-client.service';
+import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,8 @@ export class AuthService {
   currentEmail = this.userEmailSource?.asObservable();
 
   private currentAuth?: AuthenticationResponse;
+  private refreshTokenSubject = new BehaviorSubject<AuthenticationResponse | null>(null);
+  private isRefreshing = false;
 
   private loggedInSource = new BehaviorSubject(false);
   currentlyLoggedIn = this.loggedInSource.asObservable();
@@ -43,19 +46,47 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  async redeemRefreshToken(): Promise<void> {
-    if (!this.currentAuth) {
-      return Promise.reject();
-    }
+  handle401Error(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject.next(null);
 
-    this.httpClientService.refresh(JSON.stringify(this.currentAuth?.refreshToken)).subscribe({
-      next: (authResponse) => {
-        this.setAuth(authResponse);
-        return Promise.resolve();
-      },
-      error: (error) => {
-        return Promise.reject();
+      return this.redeemRefreshToken().pipe(
+        switchMap((token: AuthenticationResponse) => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(token);
+          return next(this.addTokenHeader(request, token.authToken));
+        }),
+        catchError((err) => {
+          this.isRefreshing = false;
+          this.logout();
+          return throwError(() => err);
+        })
+      );
+    } else {
+      return this.refreshTokenSubject.pipe(
+        filter(token => token !== null),
+        take(1),
+        switchMap((token) => {
+          return next(this.addTokenHeader(request, token.authToken));
+        })
+      );
+    }
+  }
+
+  addTokenHeader(request: HttpRequest<unknown>, authToken: string): any {
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${authToken}`
       }
     });
+  }
+
+  redeemRefreshToken(): Observable<AuthenticationResponse> {
+    if (!this.currentAuth) {
+      throwError(() => new Error('User must be authenticated to perform this action'));
+    }
+
+    return this.httpClientService.refresh(JSON.stringify(this.currentAuth?.refreshToken));
   }
 }
